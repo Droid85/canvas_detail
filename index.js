@@ -1,6 +1,7 @@
 const canvaBlockEl = document.getElementById('canva-block');
 const ctx = canvaBlockEl.getContext('2d');
 const changeBtnEl = document.querySelector('#change-btn');
+const inputRadiusEl = document.getElementById('input-radius');
 const canvaW = canvaBlockEl.width = 640;
 const canvaH = canvaBlockEl.height = 480;
 const startX = 100;
@@ -16,6 +17,7 @@ const detail = {
 };
 
 changeBtnEl.addEventListener('click', onBtnChange);
+inputRadiusEl.addEventListener('change', onInputChange);
 
 function onBtnChange() {
   ctx.clearRect(0, 0, canvaW, canvaH);
@@ -25,7 +27,17 @@ function onBtnChange() {
   ctx.translate(-(detail.length * 0.5 + startX), -(detail.width * 0.5 + startY));
 }
 
-drawDetail()
+function onInputChange() {
+  ctx.clearRect(0, 0, canvaW, canvaH);
+  if (inputRadiusEl.value && !isNaN(inputRadiusEl.value) && inputRadiusEl.value <= detail.width) {
+    detail.rt.radius = +inputRadiusEl.value;
+    drawDetail();
+  } else {
+    alert('Enter number please!')
+    drawDetail();
+  }
+  inputRadiusEl.value = '';
+}
 
 function drawDetail() {
   ctx.beginPath();
@@ -39,3 +51,5 @@ function drawDetail() {
     detail.rt.radius, 0, Math.PI*1.5, true);
   ctx.stroke();
 }
+
+drawDetail();
